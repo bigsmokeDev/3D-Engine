@@ -134,7 +134,7 @@ void vertex_attrib_new(vertex_attrib_t* attrib, const vertex_attrib_desc_t* desc
 
 // :textures
 texture_t* create_texture(const char* path) {
-    texture_t* tex = malloc(sizeof(texture_t));
+    texture_t* tex = calloc(1, sizeof(texture_t));
 
     int32_t channel;
     stbi_set_flip_vertically_on_load(1);
@@ -190,7 +190,7 @@ const char* mesh_fs_src = GLSL_VERSION
 "}\0";
 
 mesh_t* create_mesh(const char* path, const char* tex_path) {
-    mesh_t* mesh = malloc(sizeof(mesh_t));
+    mesh_t* mesh = calloc(1, sizeof(mesh_t));
 
     mesh->shd = create_shader(mesh_vs_src, mesh_fs_src);
     shader_use(mesh->shd);
@@ -268,19 +268,17 @@ void destroy_mesh(mesh_t* mesh) {
 
 // :renderer
 renderer_t* create_renderer(window_t* win) {
-    renderer_t* r = malloc(sizeof(renderer_t));
+    renderer_t* r = calloc(1, sizeof(renderer_t));
 
     r->cam = create_camera(60.f, (vec2){win->w, win->h});
-
-    glEnable(GL_DEPTH_TEST);
-
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
 
     return r;
 }
 
 void renderer_begin(renderer_t* renderer) {
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     camera_update(&renderer->cam);
 }
 
