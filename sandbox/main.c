@@ -24,12 +24,18 @@ int main(void) {
         float current_frame = window_get_time();
         dt = current_frame - last_frame;
         last_frame = current_frame;
+
+        camera_fly_controller(dt, &renderer->cam, &win);
+        if (glfwGetKey(win.handle, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            window_show_cursor(&win, true);
+        if (glfwGetMouseButton(win.handle, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+            window_show_cursor(&win, false);
+
         window_poll_events();
         window_handle_resize(&win);
         window_clear();
 
         renderer_begin(renderer);
-        camera_fly_controller(dt, &renderer->cam, &win);
 
         //glm_vec3_copy(skybox->pos, renderer->cam.pos);
         renderer_draw_mesh(renderer, skybox);

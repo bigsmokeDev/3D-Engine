@@ -23,6 +23,11 @@ void camera_update(camera_t* cam) {
 }
 
 void camera_fly_controller(float dt, camera_t* cam, window_t* win) {
+    if (glfwGetKey(win->handle, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        window_show_cursor(win, true);
+    if (glfwGetMouseButton(win->handle, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+        window_show_cursor(win, false);
+
     const float speed = cam->speed * dt;
     vec3 v;
 
