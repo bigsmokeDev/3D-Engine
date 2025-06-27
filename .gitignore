@@ -1,0 +1,10 @@
+.vscode
+.vs
+bin
+engine/obj
+sandbox/obj
+Makefile
+engine/Makefile
+sandbox/Makefile
+*.sln
+*.vcxproj
