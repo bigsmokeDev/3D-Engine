@@ -3,23 +3,10 @@
 
 #include <stdio.h>
 
-#include <nuklear/nuklear.h>
-#include <nuklear/nuklear_glfw_gl3.h>
-
 int main(void) {
     window_t win = create_window(1280, 720, "Sandbox", true);
     window_show_cursor(&win, false);
     create_gl_context(&win, true);
-
-    struct nk_glfw glfw = {0};
-    struct nk_context* ctx;
-    bool debug_mode = false;
-
-    ctx = nk_glfw3_init(&glfw, win.handle, NK_GLFW3_INSTALL_CALLBACKS);
-
-    struct nk_font_atlas *atlas;
-    nk_glfw3_font_stash_begin(&glfw, &atlas);
-    nk_glfw3_font_stash_end(&glfw);
 
     renderer_t* renderer = create_renderer(&win);
     renderer->cam.speed = 2.5f;
@@ -37,13 +24,8 @@ int main(void) {
         float current_frame = window_get_time();
         dt = current_frame - last_frame;
         last_frame = current_frame;
-
-        if (glfwGetKey(win.handle, GLFW_KEY_INSERT) == GLFW_PRESS) {
-            debug_mode = !debug_mode;
-            window_show_cursor(&win, debug_mode);
-        }
         
-        if (!debug_mode) camera_fly_controller(dt, &renderer->cam, &win);
+        camera_fly_controller(dt, &renderer->cam, &win);
 
         window_poll_events();
         window_handle_resize(&win);
@@ -57,24 +39,6 @@ int main(void) {
         renderer_draw_mesh(renderer, backpack);
 
         renderer_end(renderer);
-
-        if (debug_mode) {
-            nk_glfw3_new_frame(&glfw);
-            
-            if (nk_begin(ctx, "Backpack", nk_rect(50.f, 50.f, 500.f, 200.f),
-            NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_TITLE | NK_WINDOW_BORDER)) {
-                nk_layout_row_dynamic(ctx, 20.f, 1);
-                nk_label(ctx, "Position:", NK_TEXT_ALIGN_LEFT);
-                nk_layout_row_dynamic(ctx, 20.f, 3);
-                nk_slider_float(ctx, -50.f, &backpack->pos[0], 50.f, .5f);
-                nk_slider_float(ctx, -50.f, &backpack->pos[1], 50.f, .5f);
-                nk_slider_float(ctx, -50.f, &backpack->pos[2], 50.f, .5f);
-                
-                nk_end(ctx);
-            }
-            
-            nk_glfw3_render(&glfw, NK_ANTI_ALIASING_ON, 512 * 1024, 128 * 1024);
-        }
        
         window_swap_buffers(&win);
     }

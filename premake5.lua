@@ -14,7 +14,6 @@ project "Engine"
         "engine/vendor",
         "engine/inc"
     }
-    libdirs { "bin/%{cfg.buildcfg}" }
 
     filter "system:windows"
         defines { "_GLFW_WIN32" }
@@ -32,13 +31,13 @@ project "Sandbox"
     optimize "On"
 
     files { "sandbox/**.c" }
-    includedirs { "engine/vendor", "engine/inc" }
+    includedirs { "engine/vendor/glfw/include", "engine/vendor", "engine/inc" }
     libdirs { "bin/%{cfg.buildcfg}" }
     links { "Engine" }
 
     filter "system:windows"
         defines { "_GLFW_WIN32" }
-        links { "gdi32" }
+        links { "gdi32", "opengl32" }
 
     filter "system:linux"
         defines { "_GLFW_X11" }

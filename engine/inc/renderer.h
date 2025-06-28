@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 
+
 #include <window.h>
 #include <camera.h>
 
@@ -27,13 +28,13 @@ void destroy_shader(shader_t shd);
 
 // :buffers
 typedef enum {
-    BUFFER_TYPE_VERTEX = GL_ARRAY_BUFFER,
-    BUFFER_TYPE_INDEX = GL_ELEMENT_ARRAY_BUFFER
+    BUFFER_TYPE_VERTEX = 0x8892,
+    BUFFER_TYPE_INDEX = 0x8893
 } buffer_type_t;
 
 typedef enum {
-    BUFFER_USAGE_STATIC = GL_STATIC_DRAW,
-    BUFFER_USAGE_DYNAMIC = GL_DYNAMIC_DRAW
+    BUFFER_USAGE_STATIC = 0x88E4,
+    BUFFER_USAGE_DYNAMIC = 0x88E8
 } buffer_usage_t;
 
 typedef struct {
