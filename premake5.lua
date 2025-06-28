@@ -17,7 +17,7 @@ project "Engine"
 
     filter "system:windows"
         defines { "_GLFW_WIN32" }
-        links { "gdi32" }
+        links { "gdi32", "opengl32" }
 
     filter "system:linux"
         defines { "_GLFW_X11" }
